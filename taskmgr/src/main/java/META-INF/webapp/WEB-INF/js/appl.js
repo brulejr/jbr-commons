@@ -1,4 +1,4 @@
-var applModule = angular.module('taskmgr', []);
+var applModule = angular.module('taskmgr', [ 'restServices' ]);
 
 applModule.controller('TaskCtrl', [ '$scope', function($scope) {
 	$scope.tasks = [ {
