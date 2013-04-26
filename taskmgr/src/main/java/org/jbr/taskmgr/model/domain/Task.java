@@ -16,16 +16,23 @@
  */
 package org.jbr.taskmgr.model.domain;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -125,7 +132,25 @@ public class Task {
 	@XStreamAsAttribute
 	private TaskStatus status;
 
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "T_TASK_TAG",
+			joinColumns = { @JoinColumn(name = "TASK_OID", referencedColumnName = "TASK_OID") },
+			inverseJoinColumns = { @JoinColumn(name = "TAG_OID", referencedColumnName = "TAG_OID", unique = true) })
+	private Set<Tag> tags = new HashSet<>(0);
+
+	@Transient
+	private Set<String> tagnames = new HashSet<>(0);
+
 	protected Task() {
+	}
+
+	public void addTag(final Tag tag) {
+		tags.add(tag);
+	}
+
+	public void addTagname(final String tagname) {
+		tagnames.add(tagname);
 	}
 
 	public boolean equals(Object obj) {
@@ -178,6 +203,20 @@ public class Task {
 	@XmlAttribute
 	public TaskStatus getStatus() {
 		return status;
+	}
+
+	/**
+	 * @return the task's tag names
+	 */
+	public Set<String> getTagnames() {
+		return tagnames;
+	}
+
+	/**
+	 * @return the task's tags
+	 */
+	public Set<Tag> getTags() {
+		return tags;
 	}
 
 	/**
@@ -235,6 +274,18 @@ public class Task {
 	 */
 	public void setStatus(final TaskStatus status) {
 		this.status = status;
+	}
+
+	public void setTagnames(final Set<String> tagnames) {
+		this.tagnames = tagnames;
+	}
+
+	/**
+	 * @param tags
+	 *            the thing tags to set
+	 */
+	public void setTags(final Set<Tag> tags) {
+		this.tags = tags;
 	}
 
 	/**
