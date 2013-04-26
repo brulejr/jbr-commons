@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package org.jbr.commons.rest.service.uuid.impl;
+package org.jbr.commons.service.uuid.impl;
 
 import java.util.UUID;
 
-import org.jbr.commons.rest.service.uuid.UUIDService;
+import org.jbr.commons.service.uuid.UUIDService;
 
 /**
  * Provides random universal identifiers.
