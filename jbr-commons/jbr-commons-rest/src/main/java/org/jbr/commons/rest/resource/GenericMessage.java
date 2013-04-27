@@ -16,11 +16,53 @@
  */
 package org.jbr.commons.rest.resource;
 
+import java.util.Map;
+
+import org.jbr.commons.lang.xml.XmlUtils;
+import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
- * A generic RESTful message.
+ * RESTful resource model used for generic message response.
  * 
  * @author <a href="mailto:brulejr@gmail.com">Jon Brule</a>
  */
-public class GenericMessage extends MessageSupport<Object> {
+@JsonInclude(Include.NON_EMPTY)
+public class GenericMessage extends ResourceSupport implements Message {
+
+	private String message;
+	private Map<String, Object> headers;
+
+	@Override
+	public void addHeader(final String key, final Object value) {
+		this.headers.put(key, value);
+	}
+	
+	@Override
+	public Map<String, Object> getHeaders() {
+		return headers;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
+	}
+
+	@Override
+	public void setHeaders(final Map<String, Object> headers) {
+		this.headers = headers;
+	}
+
+	@Override
+	public void setMessage(final String message) {
+		this.message = message;
+	}
+
+	@Override
+	public String toString() {
+		return XmlUtils.toXml(this);
+	}
 
 }

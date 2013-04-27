@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  * @author <a href="mailto:brulejr@gmail.com">Jon Brule</a>
  */
-public interface Message<T> {
+public interface Message {
 
 	public static final String HEADER_MESSAGE_TYPE = "x-rest-message-type";
 
@@ -36,12 +36,8 @@ public interface Message<T> {
 
 	String getMessage();
 
-	T getPayload();
-
 	void setHeaders(Map<String, Object> headers);
 
 	void setMessage(String message);
-
-	void setPayload(T payload);
 
 }
