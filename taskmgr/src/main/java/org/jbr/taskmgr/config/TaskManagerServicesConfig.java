@@ -16,35 +16,38 @@
  */
 package org.jbr.taskmgr.config;
 
-import org.jbr.commons.container.http.HttpServerConfig;
-import org.jbr.commons.container.java.JavaSpringContainerConfig;
+import org.jbr.commons.service.uuid.UUIDService;
+import org.jbr.commons.service.uuid.impl.RandomUUIDServiceImpl;
+import org.jbr.taskmgr.service.task.TaskService;
+import org.jbr.taskmgr.service.task.impl.TaskServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.WebApplicationInitializer;
+
+import com.google.common.eventbus.EventBus;
 
 /**
- * Configures the container (a.k.a. root) context for the Task Manager application.
+ * Configures the services for the Task Manager application.
  * 
  * @author <a href="mailto:brulejr@gmail.com">Jon Brule</a>
  */
 @Configuration
-@Import({
-		JavaSpringContainerConfig.class,
-		HttpServerConfig.class,
-		TaskManagerDatabaseConfig.class,
-		TaskManagerServicesConfig.class
-})
-@PropertySource({
-		"classpath:config/taskmgr.properties",
-		"classpath:config/${app.env:LOCAL}/taskmgr.properties"
-})
-public class TaskManagerContainerConfig {
+public class TaskManagerServicesConfig {
 
 	@Bean
-	public WebApplicationInitializer webApplicationInitializer() {
-		return new WebInitializer();
+	public EventBus eventBus() {
+		return new EventBus();
+	}
+
+	@Bean
+	public TaskService taskService(final EventBus eventBus) {
+		final TaskService taskService = new TaskServiceImpl();
+		taskService.setEventBus(eventBus);
+		return taskService;
+	}
+
+	@Bean
+	public UUIDService uuidService() {
+		return new RandomUUIDServiceImpl();
 	}
 
 }

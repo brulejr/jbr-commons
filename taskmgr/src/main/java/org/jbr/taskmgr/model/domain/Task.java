@@ -64,8 +64,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 public class Task {
 
 	public static class Builder {
-		
-		private Task task = new Task();
+
+		private final Task task = new Task();
 		private boolean initialized = false;
 
 		public Task build() {
@@ -78,14 +78,14 @@ public class Task {
 			return this;
 		}
 
-		public Builder setOid(final Long oid) {
-			task.oid = oid;
+		public Builder setName(final String name) {
+			task.name = name;
 			initialized = true;
 			return this;
 		}
 
-		public Builder setName(final String name) {
-			task.name = name;
+		public Builder setOid(final Long oid) {
+			task.oid = oid;
 			initialized = true;
 			return this;
 		}
@@ -96,8 +96,20 @@ public class Task {
 			return this;
 		}
 
+		public Builder setTagnames(final Set<String> tagnames) {
+			task.tagnames = tagnames;
+			initialized = true;
+			return this;
+		}
+
 		public Builder setUuid(final UUID uuid) {
 			task.uuid = uuid;
+			initialized = true;
+			return this;
+		}
+
+		public Builder setVersion(final Long version) {
+			task.version = version;
 			initialized = true;
 			return this;
 		}
@@ -114,7 +126,7 @@ public class Task {
 	@Type(type = "uuid-char")
 	@XStreamAsAttribute
 	private UUID uuid;
-	
+
 	@Version
 	@Column(name = "TASK_VERSION", nullable = false)
 	@XStreamAsAttribute
@@ -153,17 +165,12 @@ public class Task {
 		tagnames.add(tagname);
 	}
 
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Task rhs = (Task) obj;
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		if (obj.getClass() != getClass()) return false;
+		final Task rhs = (Task) obj;
 		return new EqualsBuilder()
 				.append(oid, rhs.oid)
 				.append(uuid, rhs.uuid)
@@ -182,19 +189,19 @@ public class Task {
 	}
 
 	/**
-	 * @return the task's object identifier
-	 */
-	@XmlTransient
-	public Long getOid() {
-		return oid;
-	}
-
-	/**
 	 * @return the task's name
 	 */
 	@XmlAttribute
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return the task's object identifier
+	 */
+	@XmlTransient
+	public Long getOid() {
+		return oid;
 	}
 
 	/**
@@ -253,19 +260,19 @@ public class Task {
 	}
 
 	/**
-	 * @param oid
-	 *            the task object identifier to set
-	 */
-	protected void setOid(final Long oid) {
-		this.oid = oid;
-	}
-
-	/**
 	 * @param name
 	 *            the task name to set
 	 */
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param oid
+	 *            the task object identifier to set
+	 */
+	protected void setOid(final Long oid) {
+		this.oid = oid;
 	}
 
 	/**
