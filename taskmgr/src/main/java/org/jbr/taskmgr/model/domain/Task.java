@@ -289,7 +289,7 @@ public class Task {
 
 	/**
 	 * @param tags
-	 *            the thing tags to set
+	 *            the tags to set
 	 */
 	public void setTags(final Set<Tag> tags) {
 		this.tags = tags;

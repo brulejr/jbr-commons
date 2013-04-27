@@ -1,1 +1,1 @@
-var restThingModule = angular.module('restServices', [ 'ngResource' ]);
+var restModule = angular.module('restServices', [ 'ngResource' ]);
